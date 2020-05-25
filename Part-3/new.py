@@ -23,9 +23,7 @@ app.layout = html.Div([
 ])
 @app.callback(Output('live-graph', 'figure'),
               [Input('graph-update', 'n_intervals')])
-def update_graph():
-    global X
-    global Y
+def update_graph(n):
     X.append(X[-1]+1)
     Y.append(Y[-1]+Y[-1]*random.uniform(-0.1, 0.1))
     data = plotly.graph_objs.Scatter(
@@ -34,9 +32,10 @@ def update_graph():
         name='Scatter',
         mode='lines+markers'
     )
-    return {'data': [data], 'layout': go.Layout(xaxis=dict(range=[min(X), max(Y)]),
-                                                yaxis=dict(range=[min(X), max(Y)]))}
+    return {'data': [data], 'layout': go.Layout(xaxis=dict(range=[min(X), max(X)]),
+                                                yaxis=dict(range=[min(Y), max(Y)]))}
 
 
 if __name__ == '__main__':
     app.run_server()
+
